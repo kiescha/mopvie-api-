@@ -59,35 +59,30 @@ app.get('/', (req, res) => {
     res.send('Welcome!')
 }),
 app.get('/documentation', (req, res) => {
-    res.sendfile('public/documentation.html', {root: __dirname})
+    res.sendfile('/public/documentation.html', {root: __dirname})
 }),
 
-// Will GET list of movies.
+// Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-    res.json(topMovies);
-}),
+   res.json(topMovies) 
+});
 
 // Gets the data about a specific movie.
 app.get('/movies/:title', (req, res) => {
-    res.json(topMovies.find((movie) => {
-        return movie.title === req.params.title
-    }));
+   res.json(topMovies.find((movie) => {
+       return movie.title ===req.params.title
+   }));
 });
 
 
 // Return data about a genre by name/title.
 app.get('/genres/:Name', (req, res) => {
-    res.json(topMovies.find((genres)=> {
+    res.json(topMovies.find((genres) => {
         return genres.genre === req.params.genre
-    }));
-})
+    }))
+    })
 
-// Get info about author
-// app.get('/movies/author/:name', (req, res) => {
-//     res.json(topMovies.author.find((author) => {
-//         return author.name === req.params.name
-//     }))
-// })
+
 
 //Morgan Logger
 app.use(morgan('common'));
