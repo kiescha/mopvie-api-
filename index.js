@@ -10,8 +10,8 @@ app.use(bodyParser.json());
 let topMovies =[
     {
         title: 'Warcraft: The Beginning',
-        author: {
-            name: 'Charles Leavitt and Duncan Jones',
+        director: {
+            name: 'Charles Leavitt',
             birth: '1234',
             death: 'not yet'
         },
@@ -19,7 +19,7 @@ let topMovies =[
     },
     {
         title: 'The Shawshank Redemption',
-        author: {
+        director: {
             name: 'Stephen King',
             birth: '1947',
             death: 'not yet'
@@ -28,30 +28,30 @@ let topMovies =[
     },
     {
         title: 'The Magic of Belle Isle',
-        author: {
-            name: 'Guy Thomas, Rob Reiner, Andrew Scheinman',     
+        director: {
+            name: 'Guy Thomas',     
             birth: '1999',
             death: 'not yet'
         },
-        genre: ['Comedy', 'Drama']
+        genre: 'Comedy'
     },
     {
         title: 'Dota: Dragon\'s Blood',
-        author: {
+        director: {
             name: 'Ashley Edward Miller',        
             birth: '2000',
             death: 'not yet'
         },
-        genre: ['Action', 'Sci-Fi', 'Fantasy']
+        genre: 'Action'
     },
     {
         title: 'The Witcher',
-        author: {
+        director: {
             name: 'Andrzej Sapkowski',
             birth: '2222',
             death: 'not yet'
         },
-        genre: ['Drama', 'Fantasy', 'Adventure']
+        genre:'Fantasy'
     },
 ];
 //Get Request
@@ -64,24 +64,60 @@ app.get('/documentation', (req, res) => {
 
 // Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-   res.json(topMovies) 
+   res.status(200).json(topMovies) 
 });
 
 // Gets the data about a specific movie.
 app.get('/movies/:title', (req, res) => {
-   res.json(topMovies.find((movie) => {
-       return movie.title ===req.params.title
+   res.status(200).json(topMovies.find((movie) => {
+       return movie.title === req.params.title
    }));
 });
 
 
 // Return data about a genre by name/title.
-app.get('/genres/:Name', (req, res) => {
-    res.json(topMovies.find((genres) => {
-        return genres.genre === req.params.genre
-    }))
-    })
+app.get('/genres/:genre', (req, res) => {
+    res.status(200).json(topMovies.find((genre) => {
+        return genre.genre === req.params.genre
+    }));
+});
 
+// Return data about director.
+app.get('/directors/:directorName', (req, res) => {
+    res.status(200).json(topMovies.find((director) => {
+        return director.director.name === req.params.directorName
+    })) 
+})
+
+//Get all users
+app.get('/users', (req, res) => {
+    res.send('list of all users')
+});
+
+// Add new user
+app.post('/users/:newUser', (req, res) => {
+    res.send('Seccessful registration')
+});
+
+// Allow users to update their user information
+app.put('/users/:Username', (req, res) => {
+    res.send('Seccessful update')
+});
+
+// Delete the user
+app.delete('/users/:deleteUser', (req, res) => {
+    res.send('User seccessfully deleted!')
+})
+
+//Add new movie to list of favorite
+app.post('/favorite/:movieName', (req, res) => {
+    res.send('Seccessfully added new movie to list of favorite')
+})  
+
+// Delete movie from list of favorite 
+app.delete('/favorite/:deleteMovie', (req, res) => {
+    res.send('Seccessfully deleted movie')
+});
 
 
 //Morgan Logger
