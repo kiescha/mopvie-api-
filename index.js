@@ -23,6 +23,7 @@ let topMovies =[
             name: 'Stephen King',
             birth: '1947',
             death: 'not yet'
+            
         },           
         genre: 'Drama'
     },
