@@ -13,6 +13,13 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Cors 
+const cors = require('cors');
+app.use(cors());
+
+
+// Authentication and authorization
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
@@ -102,6 +109,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 
 // Add new user
 app.post('/users', (req, res) => {
+    let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ userName: req.body.userName })
     .then((user) => {
       if (user) {
@@ -109,7 +117,7 @@ app.post('/users', (req, res) => {
       } else {
         Users.create({
             userName: req.body.userName,
-            password: req.body.password,
+            password: hashedPassword,
             email: req.body.email,
             Birthday: req.body.Birthday
           })
