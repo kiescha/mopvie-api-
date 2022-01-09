@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 const Models = require('./models.js');
+const {check, validationResult} = require('express-validator');
 
 const myFlixDB = Models.Movie;
 const Users = Models.User;
@@ -108,8 +109,18 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 })
 
 // Add new user
-app.post('/users', (req, res) => {
-    let hashedPassword = Users.hashPassword(req.body.Password);
+app.post('/users', [
+    check('userName', 'userName is required').isLength({min: 3}),
+    check('userName', 'userName contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid.').isEmail()
+], (req, res) => {
+    //Validation errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.password);
   Users.findOne({ userName: req.body.userName })
     .then((user) => {
       if (user) {
@@ -217,8 +228,9 @@ app.use((err, req, res, next) =>{
 })
 
 // App listener
-app.listen(8080, () => {
-    console.log('Kas per?!')
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+    console.log('Kas per?!' + port)
 });
 
 
