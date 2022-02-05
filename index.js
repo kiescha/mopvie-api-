@@ -10,8 +10,8 @@ const {check, validationResult} = require('express-validator');
 const myFlixDB = Models.Movie;
 const Users = Models.User;
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.PRISIJUNGIMAS, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.PRISIJUNGIMAS, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
